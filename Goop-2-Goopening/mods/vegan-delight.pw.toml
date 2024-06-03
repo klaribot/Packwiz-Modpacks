@@ -1,0 +1,13 @@
+name = "Vegan Delight"
+filename = "vegandelight-1.2.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "8b0b551df467a493586bde4c5a3c263f31b331cb"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 5309946
+project-id = 928290

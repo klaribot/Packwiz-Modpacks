@@ -1,0 +1,13 @@
+name = "Mekanism Abridged"
+filename = "MekanismBridge-Universal-3.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "df6e39812bb8da9882c9b2c35762e1f565067b16"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 5142238
+project-id = 896667

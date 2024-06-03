@@ -1,0 +1,12 @@
+# Exclude exported modpack distributables
+#/export/*
+
+# Exclude packwiz binary
+**/packwiz
+
+# Exclude temporary files
+*.tmp
+
+# Exclude archive files
+*.zip
+*.jar

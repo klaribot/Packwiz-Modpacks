@@ -1,0 +1,13 @@
+name = "Goop 2 - The Goopening"
+author = "KLARI"
+version = "0.4.4-and-three-quarters"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "e2ebfceee3581460fcd8f8d90dbb0f1c3bc022034cbdc2831219af3f85f0b96d"
+
+[versions]
+forge = "47.2.30"
+minecraft = "1.20.1"

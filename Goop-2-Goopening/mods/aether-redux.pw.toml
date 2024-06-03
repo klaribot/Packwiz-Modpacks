@@ -1,0 +1,13 @@
+name = "The Aether: Redux"
+filename = "aether-redux-2.0.15-1.20.1-neoforge.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "204537310f06b120484056083c2a8a404e28c2ef"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 5360426
+project-id = 867237

@@ -1,0 +1,13 @@
+name = "Butchery"
+filename = "butcher-2.3.1.jar"
+side = "both"
+
+[download]
+hash-format = "sha1"
+hash = "090a2161f194d947e5228141f4807b57c9378950"
+mode = "metadata:curseforge"
+
+[update]
+[update.curseforge]
+file-id = 5382623
+project-id = 973620
