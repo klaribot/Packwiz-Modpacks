@@ -12,3 +12,10 @@ packwiz
 
 # Exclude backups
 *.bak
+
+# Exclude Git folder, .gitattributes so that these are not tracked in pack index
+.git/**
+.gitattributes
+
+# Exclude the client/ folder as this is configured per instance
+client/**

@@ -1,0 +1,12 @@
+# When master branch is updated, use packwiz to create a new Prism instance
+# with bundled packwiz-installer-bootstrap.jar as a build artifact
+name: Build new Prism-Launcher instance
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-prism-instance:
+    runs-on: ubuntu-latest
+    steps:
