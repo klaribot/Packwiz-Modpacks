@@ -7,6 +7,8 @@ on:
       - main
 
 jobs:
-  build-prism-instance:
-    runs-on: ubuntu-latest
+  build-prism-instance:     # Name of the job
+    runs-on: ubuntu-latest  # All runners can only be virtual machines
     steps:
+      - name: Check out the repository to the runner
+        uses: actions/checkout@v4  
