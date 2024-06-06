@@ -1,14 +1,23 @@
-# When master branch is updated, use packwiz to create a new Prism instance
-# with bundled packwiz-installer-bootstrap.jar as a build artifact
-name: Build new Prism-Launcher instance
+# When main branch is updated via direct push or PR, use packwiz to
+# create a new Prism instance with bundled packwiz-installer-bootstrap.jar
+# and upload as a build artifact
+name: Build new Prism instance zip
 on:
   push:
     branches:
-      - main
+      - 'main'
+    paths:
+      - 'packs/*/client/**'
+  pull_request:
+    paths:
+      - 'packs/*/client/**'
 
 jobs:
-  build-prism-instance:     # Name of the job
-    runs-on: ubuntu-latest  # All runners can only be virtual machines
+  build-prism-instance:
+    # All runners can ONLY be one of the runner virtual machine images supplied by GitHub
+    # (or a self-hosted runner but that's a much later venture)
+    runs-on: ubuntu-latest
     steps:
       - name: Check out the repository to the runner
-        uses: actions/checkout@v4  
+        uses: actions/checkout@v4
+      - name: 
