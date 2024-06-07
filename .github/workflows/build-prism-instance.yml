@@ -14,10 +14,16 @@ on:
 
 jobs:
   build-prism-instance:
-    # All runners can ONLY be one of the runner virtual machine images supplied by GitHub
-    # (or a self-hosted runner but that's a much later venture)
+    # As I understand, all runners can ONLY be one of the runner virtual 
+    # machine images supplied by GitHub (or a self-hosted runner but that's 
+    # a much later venture)
     runs-on: ubuntu-latest
     steps:
+
+      # 1. Grab packwiz binary from their repo's workflow artifacts
+      # - name: Fetch packwiz binary from packwiz repo's workflow artifacts
+      #   run:
+
+      # 2. Check out
       - name: Check out the repository to the runner
         uses: actions/checkout@v4
-      - name: 
