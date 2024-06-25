@@ -66,9 +66,6 @@ jobs:
           repository: packwiz/packwiz
           run-id: ${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
           path: ${{ github.workspace }}
-      
-      - name: DEBUG - List the contents of the current working directory from this point in the run
-        run: echo "$(ls -lA ${{ github.workspace }})"
 
       - name: Make packwiz binary executable
         # Do this step only if we don't have the exact same version already cached
@@ -91,7 +88,7 @@ jobs:
   # Use packwiz to create instances for the 3 supported launchers.
   # The Prism instance type includes an auto-update bootstrapper
   build-instance:
-    name: Build all 3 instance types that packwiz supports
+    name: Build [${{ matrix.instance_type }}] instance
     runs-on: ubuntu-latest
     needs: fetch-packwiz
 
