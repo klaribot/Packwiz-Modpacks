@@ -1,0 +1,121 @@
+# The following workflow was designed in an attempt to be idempotent as to not 
+# waste storage space. Order of execution is also important, as the following 
+# steps will run sequentially every time.
+
+# When main branch is updated via direct push or PR, use packwiz to create a 
+# new Curseforge instance, Modrinth instance, and a Prism instance (which will
+# include a bundled packwiz-installer-bootstrap.jar), and upload as a build 
+# artifact. Do not compile packwiz from source, just fetch the latest
+# successful Go build from their repository.
+
+name: Build client instance zips for all 3 compatible launcher types
+on:
+  push:
+    # branches:
+    #   - 'main'
+    paths:
+      - 'packs/*/client/**'
+  pull_request:
+    paths:
+      - 'packs/*/client/**'
+
+# As I understand, all runners can ONLY be one of the runner virtual machine
+# images supplied by GitHub (or a self-hosted runner but that's a much, MUCH
+# later venture)
+jobs:
+
+  fetch-packwiz:
+    name: Fetch latest Packwiz binary for use in following jobs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Find the latest successful Go build from the packwiz/packwiz repo
+        id: get_latest_run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Actions outputs that you want to reuse must be exported like the last
+        # line of this run block. Reference: 
+        # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
+        run: |
+          LATEST_RUN_ID=$(\
+            gh run list -R packwiz/packwiz --json workflowName,status,conclusion,createdAt,databaseId | \
+            jq '.[] | select(.conclusion == "success" and .status == "completed" and .workflowName == "Go" )' | \
+            jq -s 'sort_by(.createdAt) | last | .databaseId' \
+          )
+          echo "LATEST_RUN_ID=${LATEST_RUN_ID}" >> "$GITHUB_OUTPUT"
+
+      - name: Check to see if there's a cached artifact already available for use
+        id: check_cache
+        uses: actions/cache/restore@v4.0.2
+        with:
+          # Check this key search pattern
+          key: packwiz-${{ runner.os }}-${{ runner.arch }}-${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
+          # If it exists, restore the file to this path. Reference:
+          # https://docs.github.com/en/actions/learn-github-actions/variables
+          path: ${{ github.workspace }}
+
+      - name: Download the Linux x86 64-bit binary artifact
+        uses: actions/download-artifact@v4.1.7
+        # Do this step only if we don't have the exact same version already cached
+        if: steps.check_cache.outputs.cache-hit != true
+        with:
+          name: Linux 64-bit x86
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: packwiz/packwiz
+          run-id: ${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
+          path: ${{ github.workspace }}
+
+      - name: Unzip the downloaded artifact & make packwiz binary executable
+        # Do this step only if we don't have the exact same version already cached
+        if: steps.check_cache.outputs.cache-hit != true
+        run: unzip ${{ github.workspace }}/packwiz.zip && chmod +x ${{ github.workspace }}/packwiz
+
+      - name: Cache binary in the target dir
+        id: cache_packwiz_binary
+        uses: actions/cache/save@v4.0.2
+        # Do this step only if we don't have the exact same version already cached
+        if: steps.check_cache.outputs.cache-hit != true
+        with:
+          path: ${{ github.workspace }}/packwiz
+          key: packwiz-${{ runner.os }}-${{ runner.arch }}-${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
+
+    outputs:
+      cache_changed: ${{ !steps.check_cache.outputs.cache-hit }} # when cache-hit true, there was no change, so return false
+      latest_run_id: ${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
+
+  # Use packwiz to create instances for the 3 supported launchers.
+  # The Prism instance type includes an auto-update bootstrapper
+  build-instance:
+    name: Build all 3 instance types that packwiz supports
+    runs-on: ubuntu-latest
+    needs: fetch-packwiz
+
+    # Using a matrix strategy because the instance generation commands are slightly similar
+    strategy:
+      matrix:
+        instance_type:
+          - curseforge
+          - modrinth
+        
+
+    steps:
+      - name: Check out the repository to this job
+        uses: actions/checkout@v4
+
+      - name: Restore cached binary to this job for use
+        uses: actions/cache/restore@v4.0.2
+        with:
+          path: ${{ github.workspace }}/packwiz
+          key: packwiz-${{ runner.os }}-${{ runner.arch }}-${{ needs.fetch-packwiz.outputs.latest_run_id }}
+
+      - name: Export instances from the source repository with packwiz
+        run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export -y
+
+
+
+      # - name: Make a suitable PATH directory, move binary to it, add to PATH var
+      #   # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-system-path
+      #   run: |
+      #     mkdir ${{ github.workspace }}/bin && \
+      #     mv ${{ github.workspace }}/packwiz ${{ github.workspace }}/bin/packwiz && \
+      #     echo "${{ github.workspace }}/bin" >> "$GITHUB_PATH"
