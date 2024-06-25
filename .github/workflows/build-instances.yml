@@ -54,7 +54,7 @@ jobs:
           key: packwiz-${{ runner.os }}-${{ runner.arch }}-${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
           # If it exists, restore the file to this path. Reference:
           # https://docs.github.com/en/actions/learn-github-actions/variables
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/packwiz
 
       - name: Download the Linux x86 64-bit binary artifact
         uses: actions/download-artifact@v4.1.7
