@@ -43,6 +43,7 @@ jobs:
             jq '.[] | select(.conclusion == "success" and .status == "completed" and .workflowName == "Go" )' | \
             jq -s 'sort_by(.createdAt) | last | .databaseId' \
           )
+          echo "Latest Run ID: ${LATEST_RUN_ID}"
           echo "LATEST_RUN_ID=${LATEST_RUN_ID}" >> "$GITHUB_OUTPUT"
 
       - name: Check to see if there's a cached artifact already available for use
@@ -64,7 +65,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: packwiz/packwiz
           run-id: ${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
-          path: ${{ github.workspace }}
+          path: ${{ github.workspace }}/packwiz.zip
 
       - name: Unzip the downloaded artifact & make packwiz binary executable
         # Do this step only if we don't have the exact same version already cached
