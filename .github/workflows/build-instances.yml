@@ -62,7 +62,7 @@ jobs:
       - name: Download the Linux x86 64-bit binary artifact
         uses: actions/download-artifact@v4.1.7
         # Do this step only if we don't have the exact same version already cached
-        if: steps.check_cache.outputs.cache-hit != true
+        if: !steps.check_cache.outputs.cache-hit
         with:
           name: Linux 64-bit x86
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -72,14 +72,14 @@ jobs:
 
       - name: Make packwiz binary executable
         # Do this step only if we don't have the exact same version already cached
-        if: steps.check_cache.outputs.cache-hit != true
+        if: !steps.check_cache.outputs.cache-hit
         run: chmod +x ${{ github.workspace }}/packwiz
 
       - name: Cache binary in the target dir
         id: cache_packwiz_binary
         uses: actions/cache/save@v4.0.2
         # Do this step only if we don't have the exact same version already cached
-        if: steps.check_cache.outputs.cache-hit != true
+        if: !steps.check_cache.outputs.cache-hit
         with:
           path: ${{ github.workspace }}/packwiz
           key: packwiz-${{ runner.os }}-${{ runner.arch }}-${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
