@@ -56,6 +56,9 @@ jobs:
           # https://docs.github.com/en/actions/learn-github-actions/variables
           path: ${{ github.workspace }}/packwiz
 
+      - name: DEBUG -  Was cache hit?
+        run: echo "Cache hit? ${{ steps.check_cache.outputs.cache-hit }}"
+
       - name: Download the Linux x86 64-bit binary artifact
         uses: actions/download-artifact@v4.1.7
         # Do this step only if we don't have the exact same version already cached
