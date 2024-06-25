@@ -10,6 +10,7 @@
 
 name: Build client instance zips for all 3 compatible launcher types
 on:
+  workflow_dispatch:
   push:
     # branches:
     #   - 'main'
@@ -96,7 +97,6 @@ jobs:
         instance_type:
           - curseforge
           - modrinth
-        
 
     steps:
       - name: Check out the repository to this job
@@ -110,8 +110,6 @@ jobs:
 
       - name: Export instances from the source repository with packwiz
         run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export -y
-
-
 
       # - name: Make a suitable PATH directory, move binary to it, add to PATH var
       #   # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-system-path
