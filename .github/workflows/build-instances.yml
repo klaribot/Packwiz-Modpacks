@@ -70,10 +70,10 @@ jobs:
       - name: DEBUG - List the contents of the current working directory from this point in the run
         run: echo "$(ls -lA ${{ github.workspace }})"
 
-      - name: Unzip the downloaded artifact & make packwiz binary executable
+      - name: Make packwiz binary executable
         # Do this step only if we don't have the exact same version already cached
         if: steps.check_cache.outputs.cache-hit != true
-        run: unzip ${{ github.workspace }}/packwiz.zip && chmod +x ${{ github.workspace }}/packwiz
+        run: chmod +x ${{ github.workspace }}/packwiz
 
       - name: Cache binary in the target dir
         id: cache_packwiz_binary
