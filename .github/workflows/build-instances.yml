@@ -65,10 +65,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: packwiz/packwiz
           run-id: ${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
-          path: ${{ github.workspace }}/packwiz.zip
+          path: ${{ github.workspace }}
       
       - name: DEBUG - List the contents of the current working directory from this point in the run
-        run: echo "$(ls -lA)"
+        run: echo "$(ls -lA ${{ github.workspace }})"
 
       - name: Unzip the downloaded artifact & make packwiz binary executable
         # Do this step only if we don't have the exact same version already cached
