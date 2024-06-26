@@ -43,7 +43,7 @@ jobs:
             jq '.[] | select(.conclusion == "success" and .status == "completed" and .workflowName == "Go" )' | \
             jq -s 'sort_by(.createdAt) | last | .databaseId' \
           )
-          echo "Latest Run ID: ${LATEST_RUN_ID}"
+          echo "LATEST_RUN_ID: ${LATEST_RUN_ID}"
           echo "LATEST_RUN_ID=${LATEST_RUN_ID}" >> "$GITHUB_OUTPUT"
 
       - name: Check to see if there's a cached artifact already available for use
