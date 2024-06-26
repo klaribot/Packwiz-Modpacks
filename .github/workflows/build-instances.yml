@@ -80,6 +80,11 @@ jobs:
         with:
           path: ${{ github.workspace }}/packwiz
           key: packwiz-${{ runner.os }}-${{ runner.arch }}-${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
+      
+      - name: DEBUG - Echo output values
+        run: |
+          echo "cache_changed: ${{ !steps.check_cache.outputs.cache-hit }}"
+          echo "latest_run_id: ${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}"
 
     outputs:
       cache_changed: ${{ !steps.check_cache.outputs.cache-hit }} # when cache-hit true, there was no change, so return false
@@ -111,10 +116,3 @@ jobs:
 
       - name: Export instances from the source repository with packwiz
         run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export -y
-
-      # - name: Make a suitable PATH directory, move binary to it, add to PATH var
-      #   # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#adding-a-system-path
-      #   run: |
-      #     mkdir ${{ github.workspace }}/bin && \
-      #     mv ${{ github.workspace }}/packwiz ${{ github.workspace }}/bin/packwiz && \
-      #     echo "${{ github.workspace }}/bin" >> "$GITHUB_PATH"
