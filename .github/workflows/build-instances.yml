@@ -10,6 +10,7 @@
 
 name: Build client instance zips for all 3 compatible launcher types
 on:
+  # This adds a manual button that can be triggered in the UI
   workflow_dispatch:
   push:
     # branches:
@@ -90,29 +91,58 @@ jobs:
       cache_changed: ${{ !steps.check_cache.outputs.cache-hit }} # when cache-hit true, there was no change, so return false
       latest_run_id: ${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
 
-  # Use packwiz to create instances for the 3 supported launchers.
-  # The Prism instance type includes an auto-update bootstrapper
-  build-instance:
-    name: Build [${{ matrix.instance_type }}] instance
+  find-changed-packs:
+    name: Find and record changed modpack directories
     runs-on: ubuntu-latest
-    needs: fetch-packwiz
-
-    # Using a matrix strategy because the instance generation commands are slightly similar
-    strategy:
-      matrix:
-        instance_type:
-          - curseforge
-          - modrinth
 
     steps:
       - name: Check out the repository to this job
         uses: actions/checkout@v4
 
-      - name: Restore cached binary to this job for use
+      - name: Find changed modpack directories
+        id: detect_changes
+        run: |
+          CHANGED_MODPACKS=$(\
+            git diff --name-only ${{ github.event.before }} ${{ github.sha }} | \
+            grep '^packs/' | \
+            cut -d'/' -f2 | \
+            sort | \
+            uniq | \
+            jq -R . | \
+            jq -s .
+          )
+          echo "CHANGED_MODPACKS: ${CHANGED_MODPACKS}"
+          echo "CHANGED_MODPACKS=${CHANGED_MODPACKS}" >> "$GITHUB_OUTPUT"
+
+    outputs:
+      changed_modpacks: ${{ steps.detect_changes.outputs.CHANGED_MODPACKS }}
+  
+  # Use packwiz to create instances for the 3 supported launchers.
+  # The Prism instance type includes an auto-update bootstrapper
+  build-instance:
+    name: Build [${{ matrix.instance_type }}] instance
+    runs-on: ubuntu-latest
+    needs: 
+      - fetch-packwiz
+      - find-changed-packs
+
+    # Using a matrix strategy because the instance generation commands are slightly similar
+    strategy:
+      matrix:
+        instance_type: ['curseforge', 'modrinth', 'prism']
+        pack_dir: ${{ fromJson(needs.find-changed-packs.outputs.changed_modpacks) }}
+
+    steps:
+      - name: Check out the repository to this job
+        uses: actions/checkout@v4
+
+      - name: Restore cached binary to use in building ${{ matrix.instance_type }} instance
         uses: actions/cache/restore@v4.0.2
+        if: matrix.instance_type != 'prism'
         with:
           path: ${{ github.workspace }}/packwiz
           key: packwiz-${{ runner.os }}-${{ runner.arch }}-${{ needs.fetch-packwiz.outputs.latest_run_id }}
 
-      - name: Export instances from the source repository with packwiz
+      - name: Export instances from the source repository to ${{ matrix.instance_type }} with packwiz
+        if: matrix.instance_type != 'prism'
         run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export -y
