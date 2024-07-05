@@ -40,6 +40,7 @@ jobs:
         # line of this run block. Reference: 
         # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-output-parameter
         run: |
+          set -euo pipefail
           LATEST_RUN_ID=$(\
             gh run list -R packwiz/packwiz --json workflowName,status,conclusion,createdAt,databaseId | \
             jq '.[] | select(.conclusion == "success" and .status == "completed" and .workflowName == "Go" )' | \
@@ -72,7 +73,7 @@ jobs:
       - name: Make packwiz binary executable
         # Do this step only if we don't have the exact same version already cached
         if: steps.check_cache.outputs.cache-hit != 'true'
-        run: chmod +x ${{ github.workspace }}/packwiz
+        run: chmod +x ${{ github.workspace }}/packwiz || exit 1
 
       - name: Cache binary in the target dir
         id: cache_packwiz_binary
@@ -85,6 +86,7 @@ jobs:
       
       - name: DEBUG - Echo output values
         run: |
+          set -euo pipefail
           echo "cache_changed: ${{ !steps.check_cache.outputs.cache-hit }}"
           echo "latest_run_id: ${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}"
 
@@ -103,6 +105,7 @@ jobs:
       - name: Find changed modpack directories
         id: detect_changes
         run: |
+          set -euo pipefail
           CHANGED_MODPACKS=$(\
             git diff --name-only HEAD~1 HEAD | \
             grep '^packs/' | \
@@ -143,4 +146,4 @@ jobs:
 
       - name: Export instances from the source repository to ${{ matrix.instance_type }} with packwiz
         if: matrix.instance_type != 'prism'
-        run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export -y
+        run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export -y || exit 1
