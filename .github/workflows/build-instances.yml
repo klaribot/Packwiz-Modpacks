@@ -102,6 +102,12 @@ jobs:
       - name: Check out the repository to this job
         uses: actions/checkout@v4
 
+      - name: DEBUG - Echo hash of HEAD and the immediate previous commit before HEAD (HEAD~1)
+        run: |
+          set -euo pipefail
+          echo "HEAD hash: $(git rev-parse HEAD)"
+          echo "HEAD~1 hash: $(git rev-parse HEAD~1)"
+
       - name: Find changed modpack directories
         id: detect_changes
         run: |
