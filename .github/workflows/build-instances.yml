@@ -109,8 +109,7 @@ jobs:
             cut -d'/' -f2 | \
             sort | \
             uniq | \
-            jq -R . | \
-            jq -s .
+            jq -R -s 'split("\n")[:-1]'
           )
           echo "CHANGED_MODPACKS: ${CHANGED_MODPACKS}"
           echo "CHANGED_MODPACKS=${CHANGED_MODPACKS}" >> "$GITHUB_OUTPUT"
