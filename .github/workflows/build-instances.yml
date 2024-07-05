@@ -101,6 +101,9 @@ jobs:
     steps:
       - name: Check out the repository to this job
         uses: actions/checkout@v4
+        with:
+          # Fetch HEAD and the commit right before HEAD
+          fetch-depth: 2
 
       - name: DEBUG - Echo available commit hashes, hash of HEAD, and the immediate previous commit before HEAD (HEAD~1)
         run: |
