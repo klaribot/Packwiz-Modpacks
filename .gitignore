@@ -1,8 +1,9 @@
 # Exclude exported modpack distributables
 #/export/*
 
-# Exclude packwiz binary
+# Exclude packwiz binary on both Windows and Linux
 **/packwiz
+**/packwiz.exe
 
 # Exclude temporary files
 *.tmp

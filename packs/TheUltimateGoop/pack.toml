@@ -1,12 +1,12 @@
-name = "Goop 2 - The Goopening"
+name = "The Goop Pack"
 author = "KLARI"
-version = "0.4.4-and-three-quarters"
+version = "0.5.1"
 pack-format = "packwiz:1.1.0"
 
 [index]
 file = "index.toml"
 hash-format = "sha256"
-hash = "e2ebfceee3581460fcd8f8d90dbb0f1c3bc022034cbdc2831219af3f85f0b96d"
+hash = "aa885a29eafd16380934dcac9611594faa3be4bfed111d2a95082fb92eb355b2"
 
 [versions]
 forge = "47.2.30"

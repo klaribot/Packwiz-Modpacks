@@ -124,9 +124,10 @@ jobs:
       changed_modpacks: ${{ steps.detect_changes.outputs.CHANGED_MODPACKS }}
   
   # Use packwiz to create instances for the 3 supported launchers.
-  # The Prism instance type includes an auto-update bootstrapper
+  # The Prism instance type includes an auto-update bootstrapper,
+  # but doesn't actually build with Packwiz, so we don't need to pull it in.
   build-instance:
-    name: Build [${{ matrix.instance_type }}] instance
+    name: Build [${{ matrix.instance_type }}] instance for [${{ matrix.pack_dir }}]
     runs-on: ubuntu-latest
     needs: [fetch-packwiz, find-changed-packs]
 
@@ -149,4 +150,4 @@ jobs:
 
       - name: Export instances from the source repository to ${{ matrix.instance_type }} with packwiz
         if: matrix.instance_type != 'prism'
-        run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export -y || exit 1
+        run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export --pack-file ./packs/${{ matrix.pack_dir }}/pack.toml --side client --yes || exit 1
