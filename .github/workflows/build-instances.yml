@@ -141,6 +141,9 @@ jobs:
     steps:
       - name: Check out the repository to this job
         uses: actions/checkout@v4
+      
+      - name: Make export directory for pulling apart zipped instances and re-zipping them as artifacts
+        run: mkdir ${{ github.workspace }}/export
 
       # There's gotta be a more efficient replacement for this that doesn't
       # require a third-party action, because this is a fairly stupid setup
@@ -148,7 +151,7 @@ jobs:
         id: packtoml-to-json
         uses: mikefarah/yq@v4.44.2
         with:
-          cmd: yq eval -oj '.' ./packs/${{ matrix.pack_dir }}/pack.toml
+          cmd: yq eval -oj '.' ${{ github.workspace }}/packs/${{ matrix.pack_dir }}/pack.toml
 
       - name: Extract name and version from previous step to individual workflow output values
         id: extracted-pack-info
@@ -170,10 +173,13 @@ jobs:
 
       - name: Export instances from the source repository to ${{ matrix.instance_type }} with packwiz
         if: matrix.instance_type != 'prism'
-        run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export --pack-file ./packs/${{ matrix.pack_dir }}/pack.toml --yes || exit 1
+        run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export --pack-file ${{ github.workspace }}/packs/${{ matrix.pack_dir }}/pack.toml --yes --output export.zip || exit 1
+
+      - name: Pull apart the instance archive into `export` for re-zipping as artifact
+        run: unzip export.zip -d ${{ github.workspace }}/export
 
       - name: Upload exported instances as build artifacts
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: ${{ steps.extracted-pack-info.outputs.PACK_NAME }} (for ${{ matrix.instance_type }})
-          path: ${{ steps.extracted-pack-info.outputs.PACK_NAME }}-${{ steps.extracted-pack-info.outputs.PACK_VERSION }}.*
+          name: ${{ steps.extracted-pack-info.outputs.PACK_NAME }}-${{ steps.extracted-pack-info.outputs.PACK_VERSION }}-${{ matrix.instance_type }}
+          path: ${{ github.workspace }}/export/**
