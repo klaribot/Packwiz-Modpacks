@@ -103,6 +103,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           # Fetch HEAD and the commit right before HEAD
+          # Between these two commits is where we're looking for changes
           fetch-depth: 2
 
       - name: Find changed modpack directories
@@ -141,6 +142,23 @@ jobs:
       - name: Check out the repository to this job
         uses: actions/checkout@v4
 
+      - name: Convert data from pack.toml to json with third-party yq action
+        id: packtoml-to-json
+        uses: mikefarah/yq@v4.44.2
+        with:
+          cmd: yq -oj .\packs\${{ matrix.pack_dir }}\pack.toml
+
+      - name: Extract name and version from previous step to individual workflow output values
+        id: extracted-pack-info
+        run: |
+          set -euo pipefail
+          PACK_NAME=$( echo '${{ steps.packtoml-to-json.outputs.result }}' | jq '.name' )
+          PACK_VERSION=$( echo '${{ steps.packtoml-to-json.outputs.result }}' | jq '.version' )
+          echo "PACK_NAME: ${PACK_NAME}"
+          echo "PACK_VERSION: ${PACK_VERSION}"
+          echo "PACK_NAME=${PACK_NAME}" >> "$GITHUB_OUTPUT"
+          echo "PACK_VERSION=${PACK_VERSION}" >> "$GITHUB_OUTPUT"
+
       - name: Restore cached binary to use in building ${{ matrix.instance_type }} instance
         uses: actions/cache/restore@v4.0.2
         if: matrix.instance_type != 'prism'
@@ -151,3 +169,9 @@ jobs:
       - name: Export instances from the source repository to ${{ matrix.instance_type }} with packwiz
         if: matrix.instance_type != 'prism'
         run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export --pack-file ./packs/${{ matrix.pack_dir }}/pack.toml --yes || exit 1
+
+      - name: Upload exported instances as build artifacts
+        uses: actions/upload-artifact@v4.3.4
+        with:
+          name: ${{ steps.extracted-pack-info.outputs.PACK_NAME }} (for ${{ matrix.instance_type }})
+          path: ${{ steps.extracted-pack-info.outputs.PACK_NAME }}-${{ steps.extracted-pack-info.outputs.PACK_VERSION }}.*
