@@ -150,4 +150,4 @@ jobs:
 
       - name: Export instances from the source repository to ${{ matrix.instance_type }} with packwiz
         if: matrix.instance_type != 'prism'
-        run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export --pack-file ./packs/${{ matrix.pack_dir }}/pack.toml --side client --yes || exit 1
+        run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export --pack-file ./packs/${{ matrix.pack_dir }}/pack.toml --yes || exit 1
