@@ -146,7 +146,7 @@ jobs:
         id: packtoml-to-json
         uses: mikefarah/yq@v4.44.2
         with:
-          cmd: yq -oj .\packs\${{ matrix.pack_dir }}\pack.toml
+          cmd: yq eval -oj .\packs\${{ matrix.pack_dir }}\pack.toml
 
       - name: Extract name and version from previous step to individual workflow output values
         id: extracted-pack-info
