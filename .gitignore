@@ -10,4 +10,5 @@
 
 # Exclude archive files
 *.zip
+*.mrpack
 *.jar

@@ -4,11 +4,13 @@
 # Exclude README
 README.md
 
-# Exclude packwiz binary
-packwiz
+# Exclude packwiz binary on both Windows and Linux
+**/packwiz
+**/packwiz.exe
 
-# Exclude exported zip files
+# Exclude exported modpack archives
 *.zip
+*.mrpack
 
 # Exclude backups
 *.bak
