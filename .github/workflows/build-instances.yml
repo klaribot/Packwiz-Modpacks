@@ -154,8 +154,8 @@ jobs:
         id: extracted-pack-info
         run: |
           set -euo pipefail
-          PACK_NAME=$( echo '${{ steps.packtoml-to-json.outputs.result }}' | jq '.name' )
-          PACK_VERSION=$( echo '${{ steps.packtoml-to-json.outputs.result }}' | jq '.version' )
+          PACK_NAME=$( echo '${{ steps.packtoml-to-json.outputs.result }}' | jq -r '.name' )
+          PACK_VERSION=$( echo '${{ steps.packtoml-to-json.outputs.result }}' | jq -r '.version' )
           echo "PACK_NAME: ${PACK_NAME}"
           echo "PACK_VERSION: ${PACK_VERSION}"
           echo "PACK_NAME=${PACK_NAME}" >> "$GITHUB_OUTPUT"
