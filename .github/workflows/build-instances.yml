@@ -142,11 +142,13 @@ jobs:
       - name: Check out the repository to this job
         uses: actions/checkout@v4
 
+      # There's gotta be a more efficient replacement for this that doesn't
+      # require a third-party action, because this is a fairly stupid setup
       - name: Convert data from pack.toml to json with third-party yq action
         id: packtoml-to-json
         uses: mikefarah/yq@v4.44.2
         with:
-          cmd: yq eval -oj '.' .\packs\${{ matrix.pack_dir }}\pack.toml
+          cmd: yq eval -oj '.' ./packs/${{ matrix.pack_dir }}/pack.toml
 
       - name: Extract name and version from previous step to individual workflow output values
         id: extracted-pack-info
