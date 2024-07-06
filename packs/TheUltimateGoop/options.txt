@@ -1,5 +1,5 @@
 version:3465
-autoJump:false
+autoJump:true
 operatorItemsTab:true
 autoSuggestions:true
 chatColors:true
@@ -13,7 +13,6 @@ hideLightningFlashes:false
 graphicsMode:1
 prioritizeChunkUpdates:0
 hideServerAddress:true
-pauseOnLostFocus:false
 useNativeTransport:true
 tutorialStep:none
 mouseWheelSensitivity:1.0
@@ -22,7 +21,6 @@ skipMultiplayerWarning:true
 skipRealms32bitWarning:true
 hideMatchedNames:true
 joinedFirstServer:true
-hideBundleTutorial:false
 syncChunkWrites:false
 showAutosaveIndicator:true
 allowServerListing:true

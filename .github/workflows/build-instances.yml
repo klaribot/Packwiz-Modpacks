@@ -105,15 +105,6 @@ jobs:
           # Fetch HEAD and the commit right before HEAD
           fetch-depth: 2
 
-      - name: DEBUG - Echo available commit hashes, hash of HEAD, and the immediate previous commit before HEAD (HEAD~1)
-        run: |
-          set -euo pipefail
-          echo "Commits:"
-          echo "----------------"
-          echo "$(git log --pretty=format:"%H")"
-          echo "HEAD hash: $(git rev-parse HEAD)"
-          echo "HEAD~1 hash: $(git rev-parse HEAD~1)"
-
       - name: Find changed modpack directories
         id: detect_changes
         run: |
@@ -124,7 +115,7 @@ jobs:
             cut -d'/' -f2 | \
             sort | \
             uniq | \
-            jq -R -s 'split("\n")[:-1]'
+            jq -R -s -c 'split("\n")[:-1]'
           )
           echo "CHANGED_MODPACKS: ${CHANGED_MODPACKS}"
           echo "CHANGED_MODPACKS=${CHANGED_MODPACKS}" >> "$GITHUB_OUTPUT"
