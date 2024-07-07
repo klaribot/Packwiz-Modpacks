@@ -42,8 +42,7 @@ jobs:
           set -euo pipefail
           LATEST_RUN_ID=$(\
             gh run list -R packwiz/packwiz --json workflowName,status,conclusion,createdAt,databaseId | \
-            jq '.[] | select(.conclusion == "success" and .status == "completed" and .workflowName == "Go" )' | \
-            jq -s 'sort_by(.createdAt) | last | .databaseId' \
+            jq -r '[.[] | select(.conclusion == "success" and .status == "completed" and .workflowName == "Go")] | sort_by(.createdAt) | last | .databaseId' 
           )
           echo "LATEST_RUN_ID: ${LATEST_RUN_ID}"
           echo "LATEST_RUN_ID=${LATEST_RUN_ID}" >> "$GITHUB_OUTPUT"
