@@ -10,15 +10,14 @@
 
 name: Build client instance zips for all 3 compatible launcher types
 on:
-  
-  push:
-    # branches:
-    #   - 'main'
-    paths:
-      - 'packs/*/client/**'
-  pull_request:
-    paths:
-      - 'packs/*/client/**'
+  # push:
+  #   # branches:
+  #   #   - 'main'
+  #   paths:
+  #     - 'packs/*/client/**'
+  # pull_request:
+  #   paths:
+  #     - 'packs/*/client/**'
   # This adds a manual button that can be triggered in the UI
   workflow_dispatch:
 
@@ -94,6 +93,21 @@ jobs:
       cache_changed: ${{ !steps.check_cache.outputs.cache-hit }} # when cache-hit true, there was no change, so return false
       latest_run_id: ${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
 
+  fetch-packwiz-installer-bootstrap:
+    name: Fetch the latest packwiz-installer-bootstrap jar for use in bundling with Prism instance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Find the latest release from the packwiz/packwiz-installer-bootstrap repo
+        id: get_latest_release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          LATEST_RELEASE=$(\
+            
+          )
+
   find-changed-packs:
     name: Find and record changed modpack directories
     runs-on: ubuntu-latest
@@ -164,6 +178,16 @@ jobs:
           echo "PACK_NAME=${PACK_NAME}" >> "$GITHUB_OUTPUT"
           echo "PACK_VERSION=${PACK_VERSION}" >> "$GITHUB_OUTPUT"
 
+      - name: Copy Prism per-instance `client` directory to `export` and create `.minecraft` directory inside it
+        if: matrix.instance_type == 'prism'
+        run: |
+          set -euo pipefail
+          cp #TODO: Where are we copying and pasting from?
+          mkdir ${{ github.workspace }}/export/.minecraft
+
+      - name: 
+        if: matrix.instance_type == 'prism'
+
       - name: Restore cached binary to use in building ${{ matrix.instance_type }} instance
         uses: actions/cache/restore@v4.0.2
         if: matrix.instance_type != 'prism'
@@ -176,10 +200,13 @@ jobs:
         run: ${{ github.workspace }}/packwiz ${{ matrix.instance_type }} export --pack-file ${{ github.workspace }}/packs/${{ matrix.pack_dir }}/pack.toml --yes --output export.zip || exit 1
 
       - name: Pull apart the instance archive into `export` for re-zipping as artifact
+        if: matrix.instance_type != 'prism'
         run: unzip export.zip -d ${{ github.workspace }}/export
 
       - name: Upload exported instances as build artifacts
         uses: actions/upload-artifact@v4.3.4
         with:
-          name: ${{ steps.extracted-pack-info.outputs.PACK_NAME }}-${{ steps.extracted-pack-info.outputs.PACK_VERSION }}-${{ matrix.instance_type }}
+          #name: ${{ steps.extracted-pack-info.outputs.PACK_NAME }}-${{ steps.extracted-pack-info.outputs.PACK_VERSION }}-${{ matrix.instance_type }}
+          name: ${{ steps.extracted-pack-info.outputs.PACK_NAME }}-${{ matrix.instance_type }}
           path: ${{ github.workspace }}/export/**
+          compression-level: 9
