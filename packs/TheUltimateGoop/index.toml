@@ -1042,7 +1042,7 @@ metafile = true
 
 [[files]]
 file = "mods/ambientsounds.pw.toml"
-hash = "44b328efbfb428f7c166eb045048c3ec0ebeac1a94f9d0cae75d3f79ae124368"
+hash = "b6b1aade3d4c5310e261c44cb01108040091d92ed46319179bbbb35f5016ca37"
 metafile = true
 
 [[files]]
@@ -1147,7 +1147,7 @@ metafile = true
 
 [[files]]
 file = "mods/colorful-hearts.pw.toml"
-hash = "e32ef65eac3f01e4daae277c1c3d290937b0f8d8230063901885148f68c1d749"
+hash = "73a651701d70d6791995de853b08f35dd34a6614e5f16d62579b2169fa55b739"
 metafile = true
 
 [[files]]
@@ -1273,11 +1273,6 @@ metafile = true
 [[files]]
 file = "mods/dynamic-music-updated.pw.toml"
 hash = "80d9827a0d36e670227a1bc9e535cf1d4e6552beb1293bc2219c10ce6992d5d2"
-metafile = true
-
-[[files]]
-file = "mods/e4mc.pw.toml"
-hash = "d49b20d6841ee811b7f7cef4aae51dfa6b52c37f1fca15823699f45900152966"
 metafile = true
 
 [[files]]
