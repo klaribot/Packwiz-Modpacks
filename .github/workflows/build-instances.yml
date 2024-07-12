@@ -45,7 +45,7 @@ jobs:
           set -euo pipefail
           LATEST_RUN_ID=$(\
             gh run list -R packwiz/packwiz --json workflowName,status,conclusion,createdAt,databaseId | \
-            jq -r '[.[] | select(.conclusion == "success" and .status == "completed" and .workflowName == "Go")] | sort_by(.createdAt) | last | .databaseId' 
+            jq -r '[.[] | select(.conclusion == "success" and .status == "completed" and .workflowName == "Go")] | sort_by(.createdAt) | last | .databaseId'
           )
           echo "LATEST_RUN_ID: ${LATEST_RUN_ID}"
           echo "LATEST_RUN_ID=${LATEST_RUN_ID}" >> "$GITHUB_OUTPUT"
@@ -81,7 +81,7 @@ jobs:
         with:
           path: ${{ github.workspace }}/packwiz
           key: packwiz-${{ runner.os }}-${{ runner.arch }}-${{ steps.get_latest_run.outputs.LATEST_RUN_ID }}
-      
+
       - name: DEBUG - Echo output values
         run: |
           set -euo pipefail
@@ -134,13 +134,13 @@ jobs:
         with:
           path: ${{ github.workspace }}/packwiz-installer-bootstrap.jar
           key: packwiz-installer-bootstrap-${{ steps.get_latest_release.outputs.LATEST_RELEASE_TAG }}
-      
+
       - name: DEBUG - Echo output values
         run: |
           set -euo pipefail
           echo "cache_changed: ${{ !steps.check_cache.outputs.cache-hit }}"
           echo "latest_release_tag: ${{ steps.get_latest_release.outputs.LATEST_RELEASE_TAG }}"
-      
+
     outputs:
       cache_changed: ${{ !steps.check_cache.outputs.cache-hit }}
       latest_release_tag: ${{ steps.get_latest_release.outputs.LATEST_RELEASE_TAG }}
@@ -174,7 +174,7 @@ jobs:
 
     outputs:
       changed_modpacks: ${{ steps.detect_changes.outputs.CHANGED_MODPACKS }}
-  
+
   # Use packwiz to create instances for the 3 supported launchers.
   # The Prism instance type includes an auto-update bootstrapper,
   # but doesn't actually build with Packwiz, so we don't need to pull it in.
@@ -192,7 +192,7 @@ jobs:
     steps:
       - name: Check out the repository to this job
         uses: actions/checkout@v4
-      
+
       - name: Make export directory for pulling apart zipped instances and re-zipping them as artifacts
         run: mkdir ${{ github.workspace }}/export
 
@@ -214,7 +214,7 @@ jobs:
           echo "PACK_VERSION: ${PACK_VERSION}"
           echo "PACK_NAME=${PACK_NAME}" >> "$GITHUB_OUTPUT"
           echo "PACK_VERSION=${PACK_VERSION}" >> "$GITHUB_OUTPUT"
-      
+
       - name: Restore cached bootstrap jar to use in building ${{ matrix.instance_type }} instance
         uses: actions/cache/restore@v4.0.2
         if: matrix.instance_type == 'prism'
