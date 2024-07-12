@@ -18,6 +18,9 @@ README.md
 # Exclude temp files
 *.tmp
 
+# Exclude accidental jar files
+*.jar
+
 # Exclude Git folder and .gitattributes
 .git/**
 .gitattributes
