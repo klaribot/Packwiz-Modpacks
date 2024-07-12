@@ -1365,6 +1365,11 @@ file = "mods/gtceu-1.20.1-1.2.1-build_623.jar"
 hash = "68d84bf0fe47f00f1d69d460c8ca75796264ac8bdd7f3488b4d1ff57ae390e2d"
 
 [[files]]
+file = "mods/gtceu.pw.toml"
+hash = "558841ee259422d0c52a2a64c0d31ebfed3b40748b0a2bca855028037e851076"
+metafile = true
+
+[[files]]
 file = "mods/handcrafted.pw.toml"
 hash = "b9a7e71472f5f88229bf2f9e214b223b3900052bdc56075906d7a22acf74568c"
 metafile = true
