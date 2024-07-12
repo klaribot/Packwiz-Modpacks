@@ -1361,12 +1361,8 @@ hash = "6c7cfc467ca9b47992f4ab0a119f432a93aafcd74d2d88ea58fc108b24217ec6"
 metafile = true
 
 [[files]]
-file = "mods/gtceu-1.20.1-1.2.1-build_623.jar"
-hash = "68d84bf0fe47f00f1d69d460c8ca75796264ac8bdd7f3488b4d1ff57ae390e2d"
-
-[[files]]
 file = "mods/gtceu.pw.toml"
-hash = "558841ee259422d0c52a2a64c0d31ebfed3b40748b0a2bca855028037e851076"
+hash = "86192df8d7549d30944c2a3340954e084ce68ec3d6aa5d2d8c9e85a8a0952540"
 metafile = true
 
 [[files]]
