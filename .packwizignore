@@ -15,7 +15,10 @@ README.md
 # Exclude backups
 *.bak
 
-# Exclude Git folder, .gitattributes so that these are not tracked in pack index
+# Exclude temp files
+*.tmp
+
+# Exclude Git folder and .gitattributes
 .git/**
 .gitattributes
 

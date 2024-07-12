@@ -85,10 +85,6 @@ file = "config/NoChatReports/README.md"
 hash = "c52b76ccad2bd1063a22c7f6bb9e7c5db6b00fb53a6fd605585972ee0e5fc01f"
 
 [[files]]
-file = "config/WildfireGender/68606600-ae5d-4523-846b-5b90d4430701.json"
-hash = "52ffb563380338102fa1303b8d7c760e55601de4554c660691d4af4005dcc25d"
-
-[[files]]
 file = "config/ae2/client.json"
 hash = "2b4592dca53600318a7123befb79193bd261a44739b203d3e01d56eddbf2e27e"
 
@@ -577,10 +573,6 @@ file = "config/jei/recipe-category-sort-order.ini"
 hash = "e65ad6fa224c1937b3f68bc04e4554a3c20681f6743383577435424874d27a15"
 
 [[files]]
-file = "config/jei/world/local/True_Test_2/bookmarks.ini"
-hash = "829c0dd7aa1980624b7aec2e0f38c41b3ee0b28ed4f8b14d513ee8c7882e21f4"
-
-[[files]]
 file = "config/justzoom/config.txt"
 hash = "d9df9557879bee7b902e79d893b1d177cfe6866e7e01c4fb750e731ecb6d3e89"
 
@@ -771,30 +763,6 @@ hash = "55d091745ccf9dfeb931ebc6372dbb2f67062a00c6a2b456a689ca2a92e819b3"
 [[files]]
 file = "config/spark/config.json"
 hash = "992ba9f3a4a7ce3de112eb95575328956fdc3ce6781c455ebce7b23db7e7da42"
-
-[[files]]
-file = "config/spark/tmp/about.txt"
-hash = "8057ccf4540ea269b0fc332225859f44d8f3a55d891fa2e7a3447b6202658d2a"
-
-[[files]]
-file = "config/spark/tmp/spark-1edc66061803-profile-data.jfr.tmp"
-hash = "6a8e7aaecb51db855ec19c24c6958217def228d7ae52d43f8d8d67e4092bae67"
-
-[[files]]
-file = "config/spark/tmp/spark-1f03e27dbbfb-libasyncProfiler.so.tmp"
-hash = "13c034cb1f6452de2892278de4c49df7d910499c37c275a32895e67a4fb2bc54"
-
-[[files]]
-file = "config/spark/tmp/spark-42299394ab82-libasyncProfiler.so.tmp"
-hash = "13c034cb1f6452de2892278de4c49df7d910499c37c275a32895e67a4fb2bc54"
-
-[[files]]
-file = "config/spark/tmp/spark-451b000744c5-profile-data.jfr.tmp"
-hash = "55d04c149f62013f2cfd273a8c59382f3ec6021f566dac8a46498cdf09f1d6ac"
-
-[[files]]
-file = "config/spark/tmp/spark-452a19febf1f-profile-data.jfr.tmp"
-hash = "e831e4456b6dbd6f2ab4a61ba12f946c9aa64111ae34d48d77dfb758d118b55d"
 
 [[files]]
 file = "config/structure_gel-client.toml"
